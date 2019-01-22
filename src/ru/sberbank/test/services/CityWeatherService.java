@@ -25,9 +25,9 @@ public class CityWeatherService {
 	
 	@GET
 	@Produces("text/plain")
-	public Response convertFtoC() throws JSONException { 
+	public Response defaultCall() throws JSONException { 
 		String result = "Correct calling: <host:port>/<context-path>/api/temperature/bycityname?name=<name>";
-		return Response.status(200).entity(result).build();
+		return Response.status(200).header("Access-Control-Allow-Origin", "*").entity(result).build();
 	}
 	
 	@Path("/bycity")
@@ -36,47 +36,47 @@ public class CityWeatherService {
 	public Response getTempByCityName(@QueryParam("cityName") String city) throws JSONException { 
 		
 		if(city==null||city.isEmpty()){
-			return Response.status(400).entity("Empty city name is not allowed").build();
+			return Response.status(400).header("Access-Control-Allow-Origin", "*").entity("Empty city name is not allowed").build();
 		}
 		
 		try {
 			JSONObject jsonObject = new JSONObject();	
 			jsonObject.put("temperature", getTempByCity(city));		
 			String result = jsonObject.toString();
-			return Response.status(200).entity(result).build();
+			return Response.status(200).header("Access-Control-Allow-Origin", "*").entity(result).build();
 		}catch(Exception e) {
-			return Response.status(500).entity(e.getMessage()).build();
+			return Response.status(500).header("Access-Control-Allow-Origin", "*").entity(e.getMessage()).build();
 		}
 	}	
 	
 	@POST
 	@Produces("text/plain")
 	public Response doPost() throws JSONException {			
-		return Response.status(405).entity("Not allowed").build();
+		return Response.status(405).header("Access-Control-Allow-Origin", "*").entity("Not allowed").build();
 	}
 	
 	@PUT
 	@Produces("text/plain")
 	public Response doPut() throws JSONException {			
-		return Response.status(405).entity("Not allowed").build();
+		return Response.status(405).header("Access-Control-Allow-Origin", "*").entity("Not allowed").build();
 	}
 	
 	@DELETE
 	@Produces("text/plain")
 	public Response doDelete() throws JSONException {			
-		return Response.status(405).entity("Not allowed").build();
+		return Response.status(405).header("Access-Control-Allow-Origin", "*").entity("Not allowed").build();
 	}
 	
 	@HEAD
 	@Produces("text/plain")
 	public Response doHead() throws JSONException {			
-		return Response.status(405).entity("Not allowed").build();
+		return Response.status(405).header("Access-Control-Allow-Origin", "*").entity("Not allowed").build();
 	}
 	
 	@OPTIONS
 	@Produces("text/plain")
 	public Response doOptions() throws JSONException {			
-		return Response.status(405).entity("Not allowed").build();
+		return Response.status(405).header("Access-Control-Allow-Origin", "*").entity("Not allowed").build();
 	}
 	
 	private String getTempByCity(String city) {
