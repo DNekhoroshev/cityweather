@@ -72,7 +72,57 @@ public class CityWeatherServiceTest {
 		assertEquals(expectedResult,resp.getEntity());
 	}
 	
-	public void injectField(Object target,String fieldName,Object value) throws Exception{
+	@Test
+	public void testDoPost(){		
+		String expectedResult = "Not allowed";
+		
+		CityWeatherService service = new CityWeatherService();
+		Response resp = service.doPost();		
+		assertEquals(405,resp.getStatus());
+		assertEquals(expectedResult,resp.getEntity());
+	}
+	
+	@Test
+	public void testDoPut(){		
+		String expectedResult = "Not allowed";
+		
+		CityWeatherService service = new CityWeatherService();
+		Response resp = service.doPut();		
+		assertEquals(405,resp.getStatus());
+		assertEquals(expectedResult,resp.getEntity());
+	}
+	
+	@Test
+	public void testDoOptions(){		
+		String expectedResult = "Not allowed";
+		
+		CityWeatherService service = new CityWeatherService();
+		Response resp = service.doOptions();		
+		assertEquals(405,resp.getStatus());
+		assertEquals(expectedResult,resp.getEntity());
+	}
+	
+	@Test
+	public void testDoDelete(){		
+		String expectedResult = "Not allowed";
+		
+		CityWeatherService service = new CityWeatherService();
+		Response resp = service.doDelete();		
+		assertEquals(405,resp.getStatus());
+		assertEquals(expectedResult,resp.getEntity());
+	}
+	
+	@Test
+	public void testDoHead(){		
+		String expectedResult = "Not allowed";
+		
+		CityWeatherService service = new CityWeatherService();
+		Response resp = service.doHead();		
+		assertEquals(405,resp.getStatus());
+		assertEquals(expectedResult,resp.getEntity());
+	}
+	
+	private void injectField(Object target,String fieldName,Object value) throws Exception{
 		Field injectedField = target.getClass().getDeclaredField(fieldName);
 		injectedField.setAccessible(true);
 		injectedField.set(target,value);
