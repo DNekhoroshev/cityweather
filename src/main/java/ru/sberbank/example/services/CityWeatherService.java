@@ -1,4 +1,4 @@
-package ru.sberbank.test.services;
+package ru.sberbank.example.services;
 
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -14,15 +14,17 @@ import javax.ws.rs.core.Response;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
-
 @Path("/temperature")
-public class CityWeatherService {
+public class CityWeatherService {	
 	
-	private final String WEATHER_URL_TEMPLATE = "https://samples.openweathermap.org/data/2.5/weather?q=%s&appid=%s";
-	
+	private final String APP_ID = "8f56ccda96cd0d0eebfc792dbf952290"; 
+			
+	private OpenWeatherMapClient client;
+
+	public CityWeatherService() {
+		client = new OpenWeatherMapClient(APP_ID);
+	}
+
 	@GET
 	@Produces("text/plain")
 	public Response defaultCall() throws JSONException { 
@@ -41,7 +43,7 @@ public class CityWeatherService {
 		
 		try {
 			JSONObject jsonObject = new JSONObject();	
-			jsonObject.put("temperature", getTempByCity(city));		
+			jsonObject.put("temperature", client.getTempByCity(city));		
 			String result = jsonObject.toString();
 			return Response.status(200).header("Access-Control-Allow-Origin", "*").entity(result).build();
 		}catch(Exception e) {
@@ -77,46 +79,6 @@ public class CityWeatherService {
 	@Produces("text/plain")
 	public Response doOptions() throws JSONException {			
 		return Response.status(405).header("Access-Control-Allow-Origin", "*").entity("Not allowed").build();
-	}
-	
-	private String getTempByCity(String city) {
-		
-		double result = Double.MIN_VALUE;
-		
-		Client client = Client.create();
-
-		WebResource webResource = client
-		   .resource(String.format(WEATHER_URL_TEMPLATE, city,"123"));
-
-		ClientResponse response = webResource.accept("application/json")
-                   .get(ClientResponse.class);
-
-		if (response.getStatus() != 200) {
-		   throw new RuntimeException("Failed : HTTP error code : "
-			+ response.getStatus());
-		}
-
-		String output = response.getEntity(String.class);
-		JSONObject json_resp = new JSONObject(output);
-		JSONObject main = null;
-		if(json_resp.has("main")) {
-			main = json_resp.getJSONObject("main");
-			if(main.has("temp")) {
-				result = kelvinToCelsium(main.getDouble("temp"));
-			}
-		}
-		
-		if(result==Double.MIN_VALUE) {
-			throw new RuntimeException("Could not define temperature because of incorrect server response");
-		}
-		
-		return String.valueOf(result);
-	}
-	
-	private double kelvinToCelsium(double kelvin) {
-		double result = kelvin - 273.15d;
-		result = result * 100;
-		return Math.round(result)/100.0;
 	}
 	
 }
