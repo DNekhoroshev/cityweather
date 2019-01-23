@@ -9,7 +9,7 @@ import com.sun.jersey.api.client.WebResource;
 public class OpenWeatherMapClient {
 	
 	private String appId;	
-	private final String WEATHER_URL_TEMPLATE = "https://samples.openweathermap.org/data/2.5/weather?q=%s&appid=%s";
+	private final String WEATHER_URL_TEMPLATE = "https://api.openweathermap.org/data/2.5/weather?q=%s&appid=%s";
 	
 	public OpenWeatherMapClient(String appId) {	
 		this.appId = appId;
